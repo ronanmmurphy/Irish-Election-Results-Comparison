@@ -1,0 +1,179 @@
+---
+title: "assignment3"
+author: "Ronan Murphy"
+date: "3/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(dplyr)
+library(RColorBrewer)
+library(viridis)
+library(colorblindr)
+library(readxl)
+library(xlsx)
+```
+
+## R Markdown
+
+
+```{r party, echo=FALSE}
+#vote per party per election
+#cvd image
+
+
+
+party_count_2016 <- read_excel("party_count_2016.xlsx", sheet = 1, col_names = TRUE)
+party_count_2016
+
+count_2016 <-ggplot(party_count_2016, aes(x=reorder(Party,Votes), y=Votes, fill = Party))+
+  geom_bar(stat="identity", width=0.5, alpha =0.8, colour="black")+
+  scale_fill_manual(values = c("yellow","lightskyblue","darkolivegreen3","dodgerblue2","green","gray","red","orange","darkgreen","purple4"))+
+   coord_flip()+
+   ggtitle("2016 Votes Per Party: Galway West")+
+  xlab("Party")+
+  ylab("Votes")+
+  scale_y_continuous(breaks = c(0,2000,4000,6000,8000,10000,12000,14000, 16000),expand = c(0, 0))+
+  theme(
+    panel.border = element_blank(),
+  panel.grid.major.x = element_line(size = 0.5, colour = 'gray'),
+  #legend.position = "none",
+  panel.grid.major.y = element_blank(),
+  panel.grid.minor = element_blank(),
+  axis.line = element_line(colour = "black"),
+  panel.background = element_rect(fill = 'white')
+  )
+#count_2016
+#cvd_grid(count_2016)
+
+
+
+
+
+party_count_2020 <- read_excel("party_count_2020.xlsx",sheet = 1, col_names = TRUE)
+count_2020 <-ggplot(party_count_2020, aes(x=reorder(Party,Votes), y=Votes, fill = Party))+
+  scale_fill_manual(values = c("yellow4","darkolivegreen3","dodgerblue2","green","gray","red","darkgreen","purple4","darkred"))+
+  geom_bar(stat="identity", width=0.5, alpha =0.8, colour="black")+
+   coord_flip()+
+   ggtitle("2020 Votes Per Party: Galway West")+
+  xlab("Party")+
+  ylab("Votes")+
+scale_y_continuous(breaks = c(0,2000,4000,6000,8000,10000,12000,14000, 16000),expand = c(0, 0))+
+  theme(
+    panel.border = element_blank(),
+    #legend.position = "none",
+    panel.grid.major.x = element_line(size = 0.5, colour = 'gray'),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+  axis.line = element_line(colour = "black"),
+  panel.background = element_rect(fill = 'white')
+  )
+#count_2020
+#cvd_grid(count_2020)
+
+```
+
+
+
+```{r compareParty}
+
+#compare vote per party per election
+
+party_count_2016 <- read_excel("Compare_Party_2016.xlsx", sheet = 1, col_names = TRUE)
+#party_count_2016
+
+party_count_2020 <- read_excel("Compare_Party_2020.xlsx", sheet = 1, col_names = TRUE)
+#party_count_2020
+party_compare <- rbind(party_count_2020,party_count_2016)
+party_compare
+
+compare <- ggplot(party_compare, aes(x=reorder(Party,-Votes), y=Votes, fill = Year))+
+  geom_col(position="dodge", width=0.5, alpha =0.8, colour="black")+
+ggtitle("Compare Votes Per Party: Galway West")+
+  xlab("Party")+
+  ylab("Votes")+
+   scale_fill_discrete(name = "Year", labels = c("2016", "2020"))+
+scale_y_continuous(breaks = c(0,2000,4000,6000,8000,10000,12000,14000, 16000),expand = c(0, 0))+
+  theme(
+    panel.border = element_blank(),
+    #legend.position = "none",
+    panel.grid.major.y = element_line(size = 0.5, colour = 'gray'),
+    panel.grid.major.x = element_blank(),
+  
+    panel.grid.minor = element_blank(),
+  axis.line = element_line(colour = "black"),
+  panel.background = element_rect(fill = 'white')
+  )
+#compare
+
+
+```
+
+
+
+```{r nationalavg}
+#compare national averages csv
+national_avg <- read.csv("national_averages.csv")
+national_avg
+local_avg <- read_excel("local_average.xlsx",sheet = 1, col_names = TRUE)
+local_avg
+
+shares_compare  <- rbind(local_avg,national_avg)
+shares_compare
+
+share <- ggplot(shares_compare, aes(x=reorder(Party,-Share), y=Share, fill = Year))+
+  geom_col(position="dodge", width=0.5, alpha =0.8, colour="black")+
+ggtitle("Compare Party % Galway West Vs National")+
+  xlab("Party")+
+  ylab("% of 1st Preference Votes")+
+  scale_fill_manual(values = c("yellow","red"))+
+   scale_fill_discrete(name = "Year", labels = c("National", "Locals"))+
+scale_y_continuous(breaks = c(0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30),expand = c(0, 0))+
+  theme(
+    panel.border = element_blank(),
+    #legend.position = "none",
+    panel.grid.major.y = element_line(size = 0.5, colour = 'gray'),
+    panel.grid.major.x = element_blank(),
+  
+    axis.text.x = element_text(angle = 30, hjust = 1),
+    panel.grid.minor = element_blank(),
+  axis.line = element_line(colour = "black"),
+  panel.background = element_rect(fill = 'white')
+  )
+share
+```
+
+
+
+```{r significantCan}
+#compare most significant candidates
+significant_candidates <- read_excel("All_significant_candidates.xlsx",sheet = 1, col_names = TRUE)
+significant_candidates
+
+
+sig_graph <- ggplot(significant_candidates, aes(x=reorder(Rank,Votes), y=Votes, fill = Year))+
+  geom_col(position="dodge", width=0.5, alpha =0.8, colour="black")+
+  geom_text(aes(label=Candidate), position=position_dodge(width=0.5), vjust=0.3, hjust = 1.2)+
+ ggtitle("Compare Most Significant Candidates")+
+  xlab("Rank")+
+  ylab("Votes")+
+   scale_fill_discrete(name = "Year", labels = c("2016", "2020"))+
+  coord_flip()+
+scale_y_continuous(breaks = c(0,2000,4000,6000,8000,10000,12000),expand = c(0, 0))+
+  theme(
+    panel.border = element_blank(),
+    #legend.position = "none",
+    panel.grid.major.x = element_line(size = 0.5, colour = 'gray'),
+    panel.grid.major.y = element_blank(),
+  
+    panel.grid.minor = element_blank(),
+  axis.line = element_line(colour = "black"),
+  panel.background = element_rect(fill = 'white')
+  )
+
+#sig_graph
+```
+
