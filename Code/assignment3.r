@@ -6,26 +6,26 @@ output: html_document
 ---
 
 
-```{r setup, include=FALSE}
+#```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
 library(ggplot2)
 library(dplyr)
 library(RColorBrewer)
-```
+#```
 
 
-```{r setup, include=FALSE}
+#```{r setup, include=FALSE}
 library(viridis)
 library(colorblindr)
 library(readxl)
 library(xlsx)
-```
+#```
 
 ## R Markdown
 
 
-```{r party, echo=FALSE}
+#```{r party, echo=FALSE}
 #vote per party per election
 #cvd image
 
@@ -79,11 +79,11 @@ scale_y_continuous(breaks = c(0,2000,4000,6000,8000,10000,12000,14000, 16000),ex
 #count_2020
 #cvd_grid(count_2020)
 
-```
+#```
 
 
 
-```{r compareParty}
+#```{r compareParty}
 
 #compare vote per party per election
 
@@ -115,11 +115,11 @@ scale_y_continuous(breaks = c(0,2000,4000,6000,8000,10000,12000,14000, 16000),ex
 #compare
 
 
-```
+#```
 
 
 
-```{r nationalavg}
+#```{r nationalavg}
 #compare national averages csv
 national_avg <- read.csv("national_averages.csv")
 national_avg
@@ -149,11 +149,11 @@ scale_y_continuous(breaks = c(0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30),expand
   panel.background = element_rect(fill = 'white')
   )
 share
-```
+#```
 
 
 
-```{r significantCan}
+#```{r significantCan}
 #compare most significant candidates
 significant_candidates <- read_excel("All_significant_candidates.xlsx",sheet = 1, col_names = TRUE)
 significant_candidates
@@ -180,5 +180,5 @@ scale_y_continuous(breaks = c(0,2000,4000,6000,8000,10000,12000),expand = c(0, 0
   )
 
 #sig_graph
-```
+#```
 
